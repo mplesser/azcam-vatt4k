@@ -1,0 +1,16 @@
+ipython
+rich
+
+git+https://github.com/mplesser/azcam
+git+https://github.com/mplesser/azcam-arc
+git+https://github.com/mplesser/azcam-ds9
+git+https://github.com/mplesser/azcam-fastapi
+git+https://github.com/mplesser/azcam-focus
+git+https://github.com/mplesser/azcam-imageserver
+git+https://github.com/mplesser/azcam-monitor
+git+https://github.com/mplesser/azcam-observe
+git+https://github.com/mplesser/azcam-scripts
+git+https://github.com/mplesser/azcam-testers
+git+https://github.com/mplesser/azcam-webtools
+
+-e .
