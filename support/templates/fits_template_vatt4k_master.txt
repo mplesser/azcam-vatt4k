@@ -1,0 +1,16 @@
+COMMENT
+COMMENT Observation
+COMMENT -----------
+OBSERVER kikwaya / Observers
+COMMENT
+COMMENT Detector
+COMMENT --------
+COMMENT
+COMMENT Instrument
+COMMENT ----------
+INSTRUME Vatt4k	/ Instrument name
+COMMENT
+COMMENT Observatory
+COMMENT -----------
+OBSERVAT Vatican Observatory, Mt.Graham	/ Observatory
+TELESCOP VATT 	/ Telescope

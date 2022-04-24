@@ -9,7 +9,7 @@ This repository contains the *azcam-vatt4k* *azcam* environment. It contains cod
 Azcam code is typically run directly from the installation folders to allow changes. From `c:\azam` folder...
 
 ```
-git clone https://github.com/uaitl/azcam-vatt4k
+git clone https://github.com/mplesser/azcam-vatt4k
 pip install -r azcam-vatt4k\requirements.txt
 ```
 

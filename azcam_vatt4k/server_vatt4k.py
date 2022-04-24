@@ -172,7 +172,7 @@ cmdserver.start()
 # ****************************************************************
 # web server
 # ****************************************************************
-if 0:
+if 1:
     webserver = WebServer()
     webserver.index = os.path.join(azcam.db.systemfolder, "index_vatt4k.html")
     webserver.port = 2403  # common web port

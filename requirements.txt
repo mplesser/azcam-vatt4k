@@ -1,16 +1,16 @@
 ipython
 rich
 
-./azcam
-./azcam-arc
-./azcam-ds9
-./azcam-fastapi
-./azcam-focus
-./azcam-imageserver
-./azcam-monitor
-./azcam-observe
-./azcam-scripts
-./azcam-testers
-./azcam-webtools
+-e ./azcam
+-e ./azcam-arc
+-e ./azcam-ds9
+-e ./azcam-fastapi
+-e ./azcam-focus
+-e ./azcam-imageserver
+-e ./azcam-monitor
+-e ./azcam-observe
+-e ./azcam-scripts
+-e ./azcam-testers
+-e ./azcam-webtools
 
 -e ./azcam-vatt4k

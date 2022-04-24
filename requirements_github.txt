@@ -13,4 +13,4 @@ git+https://github.com/mplesser/azcam-scripts
 git+https://github.com/mplesser/azcam-testers
 git+https://github.com/mplesser/azcam-webtools
 
--e .
+-e ./azcam-vatt4k
