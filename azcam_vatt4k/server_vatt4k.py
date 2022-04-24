@@ -111,7 +111,7 @@ if lab:
 else:
     exposure.send_image = 1
     exposure.folder = "/mnt/TBArray/images"
-    sendimage.set_remote_imageserver("vattcontrol.vatt", 6543, "dataserver")
+    sendimage.set_remote_imageserver("10.0.1.108", 6543, "dataserver")  # vattcontrol.vatt
 
 # ****************************************************************
 # detector
@@ -197,7 +197,7 @@ monitor.register()
 # GUIs
 # ****************************************************************
 if 1:
-    import azcam_vatt.common.start_azcamtool
+    import azcam_vatt4k.start_azcamtool
 
 # ****************************************************************
 # finish

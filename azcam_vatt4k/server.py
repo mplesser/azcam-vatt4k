@@ -1,7 +1,7 @@
 """
 azcam server script for Vatt4k systems.
 
-Usage: python -m azcam_vatt.vatt4k.server
+Usage: python -m azcam_vatt4k.server
 """
 
 import azcam_vatt4k.server_vatt4k

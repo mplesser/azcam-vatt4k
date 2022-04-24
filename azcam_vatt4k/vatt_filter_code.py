@@ -9,7 +9,7 @@ class vatt_filters:
     def __init__(self):
         pass
 
-    def connect(self, ip: str = "vattcontrol.vatt", port: int = 7600):
+    def connect(self, ip: str = "10.0.1.108", port: int = 7600):
         """
         Description: Use socket class to create a connection
         to the INDI server that controls the guidebox

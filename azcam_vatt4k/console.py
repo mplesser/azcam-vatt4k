@@ -1,7 +1,7 @@
 """
 azcam console app for Vatt4k systems
 
-Usage: python -m azcam_vatt.vatt4k.console
+Usage: python -m azcam_vatt4k.console
 """
 
 import azcam_vatt4k.console_vatt4k
