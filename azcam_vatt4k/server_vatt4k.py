@@ -7,15 +7,16 @@ import azcam.shortcuts
 from azcam.tools.cmdserver import CommandServer
 from azcam.tools.system import System
 from azcam.tools.instrument import Instrument
+from azcam.tools.arc.controller_arc import ControllerArc
+from azcam.tools.arc.exposure_arc import ExposureArc
+from azcam.tools.arc.tempcon_arc import TempConArc
+from azcam.tools.ds9.ds9display import Ds9Display
+from azcam.tools.imageserver.sendimage import SendImage
+from azcam.tools.fastapi.fastapi_server import WebServer
+from azcam.tools.webtools.status.status import Status
+
 from azcam_monitor.monitorinterface import AzCamMonitorInterface
-from azcam_arc.controller_arc import ControllerArc
-from azcam_arc.exposure_arc import ExposureArc
-from azcam_arc.tempcon_arc import TempConArc
-from azcam_ds9.ds9display import Ds9Display
-from azcam_imageserver.sendimage import SendImage
 from azcam_vatt4k.telescope_vatt import VattTCS
-from azcam_fastapi.fastapi_server import WebServer
-from azcam_webtools.status.status import Status
 
 # ****************************************************************
 # parse command line arguments
