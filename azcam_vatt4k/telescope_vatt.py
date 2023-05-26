@@ -8,7 +8,7 @@ import time
 from .vatt_filter_code import vatt_filters
 
 import azcam
-from azcam.system import System
+from azcam.header import System
 from azcam.tools.telescope import Telescope
 
 
@@ -18,7 +18,6 @@ class VattTCS(Telescope):
     """
 
     def __init__(self, tool_id="telescope", description="VATT telescope"):
-
         super().__init__(tool_id, description)
 
         self.vfilters = vatt_filters()
@@ -57,9 +56,7 @@ class VattTCS(Telescope):
 
         # add keywords to header
         for key in self.Tserver.keywords:
-            self.set_keyword(
-                key, "", self.Tserver.comments[key], self.Tserver.typestrings[key]
-            )
+            self.set_keyword(key, "", self.Tserver.comments[key], self.Tserver.typestrings[key])
 
         return
 
@@ -86,9 +83,7 @@ class VattTCS(Telescope):
 
         else:
             try:
-                command = self.Tserver.make_packet(
-                    "REQUEST " + self.Tserver.keywords[keyword]
-                )
+                command = self.Tserver.make_packet("REQUEST " + self.Tserver.keywords[keyword])
             except KeyError:
                 return ["ERROR", "Keyword %s not defined" % keyword]
             ReplyLength = self.Tserver.ReplyLengths[keyword]
@@ -263,20 +258,12 @@ class VattTCS(Telescope):
 
             if not motion:
                 azcam.log("Telescope reports it is STOPPED")
-                azcam.log(
-                    "Coords:", self.get_keyword("RA")[1], self.get_keyword("DEC")[1]
-                )
-                azcam.log(
-                    "Coords:", self.get_keyword("RA")[1], self.get_keyword("DEC")[1]
-                )
-                azcam.log(
-                    "Coords:", self.get_keyword("RA")[1], self.get_keyword("DEC")[1]
-                )
+                azcam.log("Coords:", self.get_keyword("RA")[1], self.get_keyword("DEC")[1])
+                azcam.log("Coords:", self.get_keyword("RA")[1], self.get_keyword("DEC")[1])
+                azcam.log("Coords:", self.get_keyword("RA")[1], self.get_keyword("DEC")[1])
                 return
             else:
-                azcam.log(
-                    "Coords:", self.get_keyword("RA")[1], self.get_keyword("DEC")[1]
-                )
+                azcam.log("Coords:", self.get_keyword("RA")[1], self.get_keyword("DEC")[1])
 
             time.sleep(0.1)
             cycle += 1  # not used for now
@@ -291,7 +278,6 @@ class VattTCS(Telescope):
 
 
 class TelcomServerInterface(object):
-
     Host = ""
     Port = 0
     Socket = 0
@@ -448,9 +434,7 @@ class TelcomServerInterface(object):
         """
 
         try:
-            reply = self.Socket.send(
-                str.encode(command + "\r\n")
-            )  # send command with terminator
+            reply = self.Socket.send(str.encode(command + "\r\n"))  # send command with terminator
         except:
             pass
 
@@ -489,9 +473,7 @@ class TelcomServerInterface(object):
         if keyword == "ROTANGLE":
             ReplyLength = ReplyLength - 2
 
-        reply = telemetry[
-            self.Offsets[keyword] - 1 : self.Offsets[keyword] + ReplyLength
-        ]
+        reply = telemetry[self.Offsets[keyword] - 1 : self.Offsets[keyword] + ReplyLength]
 
         # parse RA and DEC specially
         if keyword == "RA":
