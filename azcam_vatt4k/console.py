@@ -7,7 +7,7 @@ import threading
 import azcam
 import azcam_console
 import azcam_console.shortcuts
-from azcam.tools.ds9display import Ds9Display
+from azcam_server.tools.ds9display import Ds9Display
 from azcam_console.tools.focus import Focus
 
 try:

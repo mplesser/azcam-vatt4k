@@ -9,7 +9,7 @@ from .vatt_filter_code import vatt_filters
 
 import azcam
 from azcam.header import System
-from azcam.tools.telescope import Telescope
+from azcam_server.tools.telescope import Telescope
 
 
 class VattTCS(Telescope):
