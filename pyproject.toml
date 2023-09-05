@@ -1,17 +1,13 @@
 [project]
 name = "azcam-vatt4k"
-version = "22.2.1"
+version = "23.0"
 description = "Azcam extension for VATT Vatt4k facility cameras"
-license = {file ="LICENSE"}
+license = { file = "LICENSE" }
 readme = "README.md"
 requires-python = ">=3.8"
-keywords=["ccd", "imaging", "astronomy", "sensors"]
-authors = [{name="Michael Lesser"},{email = "mlesser@arizona.edu"}]
-dependencies = [
-    "ipython",
-    "rich",
-    "azcam",
-]
+keywords = ["ccd", "imaging", "astronomy", "sensors"]
+authors = [{ name = "Michael Lesser" }, { email = "mlesser@arizona.edu" }]
+dependencies = ["ipython==8.10", "rich", "azcam"]
 
 [project.urls]
 Documentation = "https://mplesser.github.io/azcam/"

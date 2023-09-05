@@ -77,8 +77,12 @@ controller.video_boards = ["gen2", "gen2"]
 controller.utility_board = "gen2"
 controller.set_boards()
 controller.pci_file = os.path.join(azcam.db.datafolder, "dspcode", "dsppci", "pci2.lod")
-controller.timing_file = os.path.join(azcam.db.datafolder, "dspcode", "dsptiming", "tim2.lod")
-controller.utility_file = os.path.join(azcam.db.datafolder, "dspcode", "dsputility", "util2.lod")
+controller.timing_file = os.path.join(
+    azcam.db.datafolder, "dspcode", "dsptiming", "tim2.lod"
+)
+controller.utility_file = os.path.join(
+    azcam.db.datafolder, "dspcode", "dsputility", "util2.lod"
+)
 controller.video_gain = 2
 controller.video_speed = 2
 if lab:
@@ -112,7 +116,9 @@ if lab:
 else:
     exposure.send_image = 1
     exposure.folder = "/mnt/TBArray/images"
-    sendimage.set_remote_imageserver("10.0.1.108", 6543, "dataserver")  # vattcontrol.vatt
+    sendimage.set_remote_imageserver(
+        "10.0.1.108", 6543, "dataserver"
+    )  # vattcontrol.vatt
 
 # ****************************************************************
 # detector
@@ -146,7 +152,9 @@ telescope = VattTCS()
 # ****************************************************************
 # system header template
 # ****************************************************************
-template = os.path.join(azcam.db.datafolder, "templates", "fits_template_vatt4k_master.txt")
+template = os.path.join(
+    azcam.db.datafolder, "templates", "fits_template_vatt4k_master.txt"
+)
 system = System("vatt4k", template)
 system.set_keyword("DEWAR", "vatt4k_dewar", "Dewar name")
 
@@ -183,7 +191,7 @@ if 1:
 # load CLI commands
 # ****************************************************************
 try:
-    from azcam_server.cli import *
+    from azcam.cli import *
 except Exception:
     pass
 

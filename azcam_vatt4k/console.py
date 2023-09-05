@@ -7,8 +7,8 @@ import threading
 import azcam
 import azcam_console
 import azcam_console.shortcuts
-from azcam_server.tools.ds9display import Ds9Display
-from azcam_console.tools.focus import Focus
+from azcam_console.tools.ds9display import Ds9Display
+from azcam_console.tools.focus import FocusConsole
 
 try:
     i = sys.argv.index("-datafolder")
@@ -65,7 +65,7 @@ create_console_tools()
 # ****************************************************************
 # focus script
 # ****************************************************************
-focus = Focus()
+focus = FocusConsole()
 focus.focus_component = "telescope"
 focus.focus_type = "absolute"
 
