@@ -16,7 +16,7 @@ from azcam_server.tools.arc.exposure_arc import ExposureArc
 from azcam_server.tools.arc.tempcon_arc import TempConArc
 from azcam_server.tools.ds9display import Ds9Display
 from azcam_server.tools.sendimage import SendImage
-from azcam_server.webserver.fastapi_server import WebServer
+from azcam_webtools.webserver.fastapi_server import WebServer
 from azcam_webtools.status.status import Status
 from azcam_webtools.exptool.exptool import Exptool
 
