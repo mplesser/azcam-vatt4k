@@ -1,5 +1,7 @@
 """
-azcamserver config for vatt4k
+Setup method for vatt4k azcamserver.
+Usage example:
+  python -i -m azcam_vatt4k.server
 """
 
 import os
@@ -23,32 +25,26 @@ from azcam_webtools.exptool.exptool import Exptool
 from azcam_monitor.monitorinterface import AzCamMonitorInterface
 from azcam_vatt4k.telescope_vatt import VattTCS
 
-# ****************************************************************
-# parse command line arguments
-# ****************************************************************
-try:
-    i = sys.argv.index("-system")
-    option = sys.argv[i + 1]
-except ValueError:
-    option = "menu"
-try:
-    i = sys.argv.index("-datafolder")
-    datafolder = sys.argv[i + 1]
-except ValueError:
-    datafolder = None
-try:
-    i = sys.argv.index("-lab")
-    lab = 1
-except ValueError:
-    lab = 0
-
 
 def setup():
-    global option, datafolder, lab
+    # command line arguments
+    try:
+        i = sys.argv.index("-system")
+        option = sys.argv[i + 1]
+    except ValueError:
+        option = "menu"
+    try:
+        i = sys.argv.index("-datafolder")
+        datafolder = sys.argv[i + 1]
+    except ValueError:
+        datafolder = None
+    try:
+        i = sys.argv.index("-lab")
+        lab = 1
+    except ValueError:
+        lab = 0
 
-    # ****************************************************************
     # define folders for system
-    # ****************************************************************
     azcam.db.systemname = "vatt4k"
 
     azcam.db.servermode = "vatt4k"
@@ -71,16 +67,12 @@ def setup():
         f"parameters_server_{azcam.db.systemname}.ini",
     )
 
-    # ****************************************************************
     # enable logging
-    # ****************************************************************
     logfile = os.path.join(azcam.db.datafolder, "logs", "server.log")
     azcam.db.logger.start_logging(logfile=logfile)
     azcam.log(f"Configuring for vatt4k")
 
-    # ****************************************************************
     # controller
-    # ****************************************************************
     controller = ControllerArc()
     controller.timing_board = "gen2"
     controller.clock_boards = ["gen2"]
@@ -103,9 +95,7 @@ def setup():
     else:
         controller.camserver.set_server("vattccdc", 2405)
 
-    # ****************************************************************
     # temperature controller
-    # ****************************************************************
     tempcon = TempConArc()
     azcam.db.tempcon = tempcon
     tempcon.set_calibrations([0, 0, 3])
@@ -113,9 +103,7 @@ def setup():
     tempcon.temperature_correction = 1
     tempcon.control_temperature = -115.0
 
-    # ****************************************************************
     # exposure
-    # ****************************************************************
     exposure = ExposureArc()
     filetype = "MEF"
     exposure.filetype = exposure.filetypes[filetype]
@@ -133,9 +121,7 @@ def setup():
             "10.0.1.108", 6543, "dataserver"
         )  # vattcontrol.vatt
 
-    # ****************************************************************
     # detector
-    # ****************************************************************
     detector_vatt4k = {
         "name": "vatt4k",
         "description": "STA0500 4064x4064 CCD",
@@ -152,78 +138,53 @@ def setup():
     exposure.image.focalplane.wcs.scale1 = [sc, sc]
     exposure.image.focalplane.wcs.scale2 = [sc, sc]
 
-    # ****************************************************************
     # instrument (not used)
-    # ****************************************************************
     instrument = Instrument()
 
-    # ****************************************************************
     # telescope
-    # ****************************************************************
     telescope = VattTCS()
 
-    # ****************************************************************
     # system header template
-    # ****************************************************************
     template = os.path.join(
         azcam.db.datafolder, "templates", "fits_template_vatt4k_master.txt"
     )
     system = System("vatt4k", template)
     system.set_keyword("DEWAR", "vatt4k_dewar", "Dewar name")
 
-    # ****************************************************************
     # display
-    # ****************************************************************
     display = Ds9Display()
 
-    # ****************************************************************
-    # read par file
-    # ****************************************************************
+    # par file
     azcam.db.parameters.read_parfile(parfile)
     azcam.db.parameters.update_pars("azcamserver")
 
-    # ****************************************************************
     # define and start command server
-    # ****************************************************************
     cmdserver = CommandServer()
     cmdserver.port = 2402
     azcam.log(f"Starting cmdserver - listening on port {cmdserver.port}")
     # cmdserver.welcome_message = "Welcome - azcam-itl server"
     cmdserver.start()
 
-    # ****************************************************************
     # web server
-    # ****************************************************************
     if 1:
         webserver = WebServer()
         webserver.index = os.path.join(azcam.db.systemfolder, "index_vatt4k.html")
         webserver.port = 2403  # common web port
         webserver.start()
 
-    # ****************************************************************
     # azcammonitor
-    # ****************************************************************
     monitor = AzCamMonitorInterface()
     monitor.proc_path = "/azcam/azcam-vatt/bin/start_server_vatt4k.bat"
     monitor.register()
 
-    # ****************************************************************
     # GUIs
-    # ****************************************************************
     if 1:
         import azcam_vatt4k.start_azcamtool
 
-    # try to change window title
-    try:
-        ctypes.windll.kernel32.SetConsoleTitleW("azcamserver")
-    except Exception:
-        pass
-
-    # ****************************************************************
     # finish
-    # ****************************************************************
     azcam.log("Configuration complete")
 
 
+# start
 setup()
 from azcam.cli import *
