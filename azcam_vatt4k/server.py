@@ -166,11 +166,12 @@ def setup():
     cmdserver.start()
 
     # web server
-    if 1:
-        webserver = WebServer()
-        webserver.index = os.path.join(azcam.db.systemfolder, "index_vatt4k.html")
-        webserver.port = 2403  # common web port
-        webserver.start()
+    webserver = WebServer()
+    webserver.index = os.path.join(azcam.db.systemfolder, "index_vatt4k.html")
+    webserver.port = 2403  # common web port
+    webserver.start()
+    webstatus = Status(webserver)
+    webstatus.initialize()
 
     # azcammonitor
     monitor = AzCamMonitorInterface()
