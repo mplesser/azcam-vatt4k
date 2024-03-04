@@ -8,9 +8,10 @@ import time
 from .vatt_filter_code import vatt_filters
 
 import azcam
+import azcam.utils
 from azcam import exceptions
 from azcam.header import System
-from azcam_server.tools.telescope import Telescope
+from azcam.server.tools.telescope import Telescope
 
 
 class VattTCS(Telescope):
