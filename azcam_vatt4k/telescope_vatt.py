@@ -9,7 +9,7 @@ from .vatt_filter_code import vatt_filters
 
 import azcam
 import azcam.utils
-from azcam import exceptions
+import azcam.exceptions
 from azcam.header import System
 from azcam.server.tools.telescope import Telescope
 
@@ -35,7 +35,7 @@ class VattTCS(Telescope):
             return
 
         if not self.enabled:
-            exceptions.warning(f"{self.description} is not enabled")
+            azcam.exceptions.warning(f"{self.description} is not enabled")
             return
 
         # telescope server interface
@@ -72,7 +72,7 @@ class VattTCS(Telescope):
         """
 
         if not self.enabled:
-            exceptions.warning(f"{self.description} is not enabled")
+            azcam.exceptions.warning(f"{self.description} is not enabled")
             return
 
         if keyword == "FILTER":
@@ -214,7 +214,7 @@ class VattTCS(Telescope):
         azcam.log("move_start command received:%s %s" % (RA, Dec))
 
         if not self.enabled:
-            exceptions.warning("telescope not enabled")
+            azcam.exceptions.warning("telescope not enabled")
             return
 
         if self.DEBUG == 1:
@@ -244,7 +244,7 @@ class VattTCS(Telescope):
         """
 
         if not self.enabled:
-            exceptions.warning("telescope not enabled")
+            azcam.exceptions.warning("telescope not enabled")
             return
 
         if self.DEBUG == 1:
@@ -260,7 +260,7 @@ class VattTCS(Telescope):
             try:
                 motion = int(reply[1])
             except:
-                exceptions.AzcamError("bad MOTION status keyword: %s" % reply[1])
+                azcam.exceptions.AzCamError("bad MOTION status keyword: %s" % reply[1])
 
             if not motion:
                 azcam.log("Telescope reports it is STOPPED")
