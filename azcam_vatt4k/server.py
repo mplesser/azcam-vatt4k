@@ -22,8 +22,8 @@ from azcam.server.tools.sendimage import SendImage
 from azcam.server.webtools.webserver.fastapi_server import WebServer
 from azcam.server.webtools.status.status import Status
 from azcam.server.webtools.exptool.exptool import Exptool
+from azcam.monitor.monitorinterface import AzCamMonitorInterface
 
-from azcam.server.monitor.monitorinterface import AzCamMonitorInterface
 from azcam_vatt4k.telescope_vatt import VattTCS
 
 
