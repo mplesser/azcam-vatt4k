@@ -260,7 +260,7 @@ class VattTCS(Telescope):
             try:
                 motion = int(reply[1])
             except:
-                azcam.exceptions.AzCamError("bad MOTION status keyword: %s" % reply[1])
+                azcam.exceptions.AzcamError("bad MOTION status keyword: %s" % reply[1])
 
             if not motion:
                 azcam.log("Telescope reports it is STOPPED")
