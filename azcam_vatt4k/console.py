@@ -37,7 +37,7 @@ def setup():
     parfile = os.path.join(
         azcam.db.datafolder,
         "parameters",
-        f"parameters_server_{azcam.db.systemname}.ini",
+        f"parameters_console_{azcam.db.systemname}.ini",
     )
 
     # start logging
