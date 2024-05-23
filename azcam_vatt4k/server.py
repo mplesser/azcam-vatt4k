@@ -117,7 +117,7 @@ def setup():
         "description": "STA0500 4064x4064 CCD",
         "ref_pixel": [2032, 2032],
         "format": [4064, 7, 0, 20, 4064, 0, 0, 0, 0],
-        "focalplane": [1, 1, 1, 2, "20"],
+        "focalplane": [1, 1, 1, 2, [2, 0]],
         "roi": [1, 4064, 1, 4064, 2, 2],
         "ext_position": [[1, 2], [1, 1]],
         "jpg_order": [1, 2],
