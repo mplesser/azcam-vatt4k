@@ -11,7 +11,7 @@ import azcam
 import azcam.utils
 import azcam.exceptions
 from azcam.header import System
-from azcam.server.tools.telescope import Telescope
+from azcam.tools.telescope import Telescope
 
 
 class VattTCS(Telescope):
