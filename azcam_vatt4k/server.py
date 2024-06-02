@@ -9,18 +9,18 @@ import sys
 
 import azcam
 import azcam.utils
-import azcam.server.server
-import azcam.server.shortcuts
-from azcam.server.cmdserver import CommandServer
+import azcam.server
+import azcam.shortcuts
+from azcam.cmdserver import CommandServer
 from azcam.header import System
-from azcam.server.tools.instrument import Instrument
-from azcam.server.tools.arc.controller_arc import ControllerArc
-from azcam.server.tools.arc.exposure_arc import ExposureArc
-from azcam.server.tools.arc.tempcon_arc import TempConArc
-from azcam.server.tools.ds9display import Ds9Display
-from azcam.server.webtools.webserver.fastapi_server import WebServer
-from azcam.server.webtools.status.status import Status
-from azcam.server.webtools.exptool.exptool import Exptool
+from azcam.tools.instrument import Instrument
+from azcam.tools.arc.controller_arc import ControllerArc
+from azcam.tools.arc.exposure_arc import ExposureArc
+from azcam.tools.arc.tempcon_arc import TempConArc
+from azcam.tools.ds9display import Ds9Display
+from azcam.webtools.webserver.fastapi_server import WebServer
+from azcam.webtools.status.status import Status
+from azcam.webtools.exptool.exptool import Exptool
 from azcam.monitor.monitorinterface import AzCamMonitorInterface
 
 from azcam_vatt4k.telescope_vatt import VattTCS
