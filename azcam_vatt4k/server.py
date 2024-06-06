@@ -23,7 +23,8 @@ from azcam.webtools.status.status import Status
 from azcam.webtools.exptool.exptool import Exptool
 from azcam.monitor.monitorinterface import AzCamMonitorInterface
 
-from azcam_vatt4k.telescope_vatt import VattTCS
+# from azcam_vatt4k.telescope_vatt import VattTCS
+from azcam_vatt4k.telescope_vatt_ascom import VattAscom
 
 
 def setup():
@@ -132,7 +133,8 @@ def setup():
     instrument = Instrument()
 
     # telescope
-    telescope = VattTCS()
+    # telescope = VattTCS()
+    telescope = VattAscom()
 
     # system header template
     template = os.path.join(
@@ -169,7 +171,7 @@ def setup():
     monitor.register()
 
     # GUIs
-    if 1:
+    if 0:
         import azcam_vatt4k.start_azcamtool
 
     # finish
