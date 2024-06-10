@@ -25,57 +25,20 @@ class VattAscom(Telescope):
     The interface to the VATT ASCOM telescope server.
     """
 
-    # the value of the keyword is the string used by ASCOM
-    keywords = {
-        "RA": "RightAscension",
-        "DEC": "Declination",
-        "AIRMASS": None,
-        "HA": None,
-        "LST-OBS": "SiderealTime",
-        "EQUINOX": None,
-        "JULIAN": None,
-        "ELEVAT": "Altitude",
-        "AZIMUTH": "Azimuth",
-        "ROTANGLE": "Position",
-        "ST": "SiderealTime",
-        "EPOCH": None,
-        "MOTION": None,
-        "FILTER": "FILTER",
-    }
-
-    comments = {
-        "RA": "right ascension",
-        "DEC": "declination",
-        "AIRMASS": "airmass",
-        "HA": "hour angle",
-        "LST-OBS": "local siderial time",
-        "EQUINOX": "equinox of RA and DEC",
-        "JULIAN": "julian date",
-        "ELEVAT": "elevation",
-        "AZIMUTH": "azimuth",
-        "MOTION": "telescope motion flag",
-        "ROTANGLE": "IIS rotation angle",
-        "ST": "local siderial time",
-        "EPOCH": "equinox of RA and DEC",
-        "MOTION": "motion flag",
-        "FILTER": "Instrument filter",
-    }
-    typestrings = {
-        "RA": "str",
-        "DEC": "str",
-        "AIRMASS": "float",
-        "HA": "str",
-        "LST-OBS": "str",
-        "EQUINOX": "float",
-        "JULIAN": "float",
-        "ELEVAT": "float",
-        "AZIMUTH": "float",
-        "MOTION": "int",
-        "BEAM": "int",
-        "ROTANGLE": "float",
-        "ST": "str",
-        "EPOCH": "float",
-        "FILTER": "str",
+    fits_keywords = {
+        "RA": ["RightAscension", "right ascension", "str"],
+        "DEC": ["Declination", "declination", "str"],
+        "AIRMASS": [None, "airmass", "airmass", "float"],
+        "HA": [None, "hour angle", "str"],
+        "LST-OBS": ["SiderealTime", "local siderial time", "str"],
+        "EQUINOX": [None, "equinox of RA and DEC", "float"],
+        "JULIAN": [None, "julian date", "float"],
+        "ELEVAT": ["Altitude", "elevation", "float"],
+        "AZIMUTH": ["Azimuth", "azimuth", "float"],
+        "ROTANGLE": ["Position", "rotation angle", "float"],
+        "EPOCH": [None, "equinox of RA and DEC", "float"],
+        "MOTION": [None, "motion flag", "int"],
+        "FILTER": ["FILTER", "instrument filter", "str"],
     }
 
     def __init__(self, tool_id="telescope", description="VATT telescope"):
@@ -89,12 +52,12 @@ class VattAscom(Telescope):
         self.tserver = AlpacaTelescope(f"{self.host}:{self.port}", 0, "http")
         self.rserver = AlpacaRotator(f"{self.host}:{self.port}", 0, "http")
 
-        # azcam.log(f"Connected to telescope: {self.tserver.Name}")
-        # azcam.log(f"Description: {self.tserver.Description}")
+        if self.verbosity:
+            azcam.log(f"Connected to telescope: {self.tserver.Name}")
+            azcam.log(f"Description: {self.tserver.Description}")
 
         if 1:
             self.initialize()
-            self.define_keywords()
 
         return
 
@@ -103,20 +66,22 @@ class VattAscom(Telescope):
         Initializes the telescope interface.
         """
 
-        if self.initialized:
+        if self.is_initialized:
             return
 
-        if not self.enabled:
+        if not self.is_enabled:
             azcam.exceptions.warning(f"{self.description} is not enabled")
             return
 
-        # check
-        print(f"RA={self.tserver.RightAscension} DE={self.tserver.Declination}")
+        if self.verbosity:
+            print(
+                f"Telemetry check: RA={self.tserver.RightAscension} DE={self.tserver.Declination}"
+            )
 
         # add keywords
         self.define_keywords()
 
-        self.initialized = 1
+        self.is_initialized = 1
 
         return
 
@@ -141,7 +106,7 @@ class VattAscom(Telescope):
         This command will read hardware to obtain the keyword value.
         """
 
-        if not self.enabled:
+        if not self.is_enabled:
             azcam.exceptions.warning(f"{self.description} is not enabled")
             return
 
