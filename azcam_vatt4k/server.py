@@ -145,6 +145,7 @@ def setup():
 
     # display
     display = Ds9Display()
+    display.initialize()
 
     # par file
     azcam.db.parameters.read_parfile(parfile)
