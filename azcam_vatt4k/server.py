@@ -21,7 +21,6 @@ from azcam.tools.ds9display import Ds9Display
 from azcam.webtools.webserver import WebServer
 from azcam.webtools.status.status import Status
 from azcam.webtools.exptool.exptool import Exptool
-from azcam.monitor.monitorinterface import AzCamMonitorInterface
 
 # from azcam_vatt4k.telescope_vatt import VattTCS
 from azcam_vatt4k.telescope_vatt_ascom import VattAscom
@@ -155,7 +154,7 @@ def setup():
     cmdserver = CommandServer()
     cmdserver.port = 2402
     azcam.log(f"Starting cmdserver - listening on port {cmdserver.port}")
-    # cmdserver.welcome_message = "Welcome - azcam-itl server"
+    azcam.db.tools["api"].initialize_api()
     cmdserver.start()
 
     # web server
@@ -167,9 +166,8 @@ def setup():
     webstatus.initialize()
 
     # azcammonitor
-    monitor = AzCamMonitorInterface()
-    monitor.proc_path = "/azcam/azcam-vatt/bin/start_server_vatt4k.bat"
-    monitor.register()
+    azcam.db.monitor.proc_path = "/azcam/azcam-vatt4k/support/start_server_vatt4k.bat"
+    azcam.db.monitor.register()
 
     # GUIs
     if 0:
