@@ -166,7 +166,7 @@ def setup():
     webstatus.initialize()
 
     # azcammonitor
-    azcam.db.monitor.proc_path = "/azcam/azcam-vatt4k/support/start_server_vatt4k.bat"
+    azcam.db.monitor.proc_path = "/azcam/azcam-vatt4k/support/start_server_vatt4k.py"
     azcam.db.monitor.register()
 
     # GUIs
