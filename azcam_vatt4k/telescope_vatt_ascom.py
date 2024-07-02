@@ -56,7 +56,7 @@ class VattAscom(Telescope):
             azcam.log(f"Connected to telescope: {self.tserver.Name}")
             azcam.log(f"Description: {self.tserver.Description}")
 
-        if 1:
+        if 0:
             self.initialize()
 
         return

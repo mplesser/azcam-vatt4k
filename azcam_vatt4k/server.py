@@ -27,7 +27,8 @@ from azcam_vatt4k.telescope_vatt_ascom import VattAscom
 
 
 def setup():
-    # command line arguments
+
+    # parse command line arguments
     try:
         i = sys.argv.index("-system")
         option = sys.argv[i + 1]
@@ -132,8 +133,9 @@ def setup():
     instrument = Instrument()
 
     # telescope
-    # telescope = VattTCS()
     telescope = VattAscom()
+    if 0:
+        telescope.initialize()
 
     # system header template
     template = os.path.join(
@@ -159,14 +161,16 @@ def setup():
 
     # web server
     webserver = WebServer()
+    webserver.message = f"for host VATTCCD"
     webserver.index = os.path.join(azcam.db.systemfolder, "index_vatt4k.html")
-    webserver.port = 2403  # common web port
+    webserver.port = 2403
     webserver.start()
     webstatus = Status(webserver)
     webstatus.initialize()
+    exptool = Exptool(webserver)
+    exptool.initialize()
 
     # azcammonitor
-    azcam.db.monitor.proc_path = "/azcam/azcam-vatt4k/support/start_server_vatt4k.py"
     azcam.db.monitor.register()
 
     # GUIs
