@@ -128,6 +128,11 @@ def setup():
     sc = -0.000_052_1
     exposure.image.focalplane.wcs.scale1 = [sc, sc]
     exposure.image.focalplane.wcs.scale2 = [sc, sc]
+    exposure.image.focalplane.gains = [
+        1.0,
+        1.0,
+    ]
+    exposure.image.focalplane.rdnoises = [4.0, 4.0]
 
     # instrument (not used)
     instrument = Instrument()
@@ -174,7 +179,7 @@ def setup():
     azcam.db.monitor.register()
 
     # GUIs
-    if 0:
+    if 1:
         import azcam_vatt4k.start_azcamtool
 
     # finish
