@@ -40,7 +40,7 @@ class VattAscom(Telescope):
             "AZIMUTH": ["Azimuth", "azimuth", "float"],
             "ROTANGLE": ["Position", "rotation angle", "float"],
             "EPOCH": [None, "equinox of RA and DEC", "float"],
-            "MOTION": [None, "motion flag", "int"],
+            "MOTION": ["Slewing", "motion flag", "int"],
             "FILTER": ["FILTER", "instrument filter", "str"],
         }
         self.vfilters = vatt_filters()
@@ -159,6 +159,10 @@ class VattAscom(Telescope):
         elif keyword == "ELEVAT":
             value = getattr(self.tserver, self.fits_keywords[keyword][0])
             reply = f"{value:.01}"
+
+        elif keyword == "MOTION":
+            value = getattr(self.tserver, self.fits_keywords[keyword][0])
+            reply = int(value)
 
         elif keyword == "AZIMUTH":
             value = getattr(self.tserver, self.fits_keywords[keyword][0])
