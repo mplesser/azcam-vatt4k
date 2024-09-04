@@ -158,7 +158,7 @@ class VattAscom(Telescope):
 
         elif keyword == "ELEVAT":
             value = getattr(self.tserver, self.fits_keywords[keyword][0])
-            reply = f"{value:.01}"
+            reply = f"{value:.03}"
 
         elif keyword == "MOTION":
             value = getattr(self.tserver, self.fits_keywords[keyword][0])
@@ -166,11 +166,11 @@ class VattAscom(Telescope):
 
         elif keyword == "AZIMUTH":
             value = getattr(self.tserver, self.fits_keywords[keyword][0])
-            reply = f"{value:.01}"
+            reply = f"{value:.04}"
 
         elif keyword == "ROTANGLE":
             value = getattr(self.rserver, self.fits_keywords[keyword][0])
-            reply = f"{value:.01}"
+            reply = f"{value:.04}"
 
         elif keyword == "ST":
             value = getattr(self.tserver, self.fits_keywords[keyword][0])
