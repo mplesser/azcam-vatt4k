@@ -131,7 +131,10 @@ class VattAscom(Telescope):
         elif keyword == "DEC":
             value = getattr(self.tserver, self.fits_keywords[keyword][0])
             a = Angle(f"{value}d")
-            reply = f"{int(a.dms.d):02}:{int(a.dms.m):02}:{a.dms.s:.01f}"
+            d = int(a.dms.d)
+            m = abs(int(a.dms.m))
+            s = abs(int(a.dms.s))
+            reply = f"{d:02}:{m:02}:{s:.01f}"
 
         elif keyword == "AIRMASS":
             value = getattr(self.tserver, "Altitude")
@@ -179,11 +182,15 @@ class VattAscom(Telescope):
 
         else:
             if keyword in self.fits_keywords:
-                self.header.set_keyword(keyword, "unsupported", self.fits_keywords[keyword][1], "str")
+                self.header.set_keyword(
+                    keyword, "unsupported", self.fits_keywords[keyword][1], "str"
+                )
                 return ["unsupported", self.fits_keywords[keyword][1], "str"]
 
             else:
-                raise azcam.exceptions.AzcamError(f"Unknown telescope keyword: {keyword}")
+                raise azcam.exceptions.AzcamError(
+                    f"Unknown telescope keyword: {keyword}"
+                )
 
         # store value in Header
         self.header.set_keyword(keyword, reply)
