@@ -35,7 +35,7 @@ class VattAscom(Telescope):
             "HA": [None, "hour angle", "str"],
             "LST-OBS": ["SiderealTime", "local siderial time", "str"],
             "EQUINOX": [None, "equinox of RA and DEC", "float"],
-            "JULIAN": [None, "julian date", "float"],
+            "JULIAN": ["julianday", "julian date", "float"],
             "ELEVAT": ["Altitude", "elevation", "float"],
             "AZIMUTH": ["Azimuth", "azimuth", "float"],
             "ROTANGLE": ["Position", "rotation angle", "float"],
@@ -109,92 +109,106 @@ class VattAscom(Telescope):
         if not self.is_enabled:
             azcam.exceptions.warning(f"{self.description} is not enabled")
             return
+        
+        try:
 
-        if keyword == "FILTER":
-            for i in range(3):
+            if keyword == "FILTER":
+                fdict={}
+                for i in range(3):
+                    try:
+                        fdict = self.vfilters.getfilters()
+                        break
+                    except Exception:
+                        azcam.log(f"Filter read error {i}...")
+                        time.sleep(0.2)
+                        fdict['upper']="unknown"
+                        fdict['lower']="unknown"
+                reply = f"upper: {fdict['upper']} lower: {fdict['lower']}"
+
+            elif keyword == "EPOCH":
+                reply = 2000.0  # test
+
+            elif keyword == "RA":
+                value = getattr(self.tserver, self.fits_keywords[keyword][0])
+                a = Angle(f"{value}d")
+                reply = f"{int(a.hms.h):02}:{int(a.hms.m):02}:{a.hms.s:.02f}"
+
+            elif keyword == "DEC":
+                value = getattr(self.tserver, self.fits_keywords[keyword][0])
+                a = Angle(f"{value}d")
+                d = int(a.dms.d)
+                m = abs(int(a.dms.m))
+                s = abs(int(a.dms.s))
+                reply = f"{d:02}:{m:02}:{s:.01f}"
+
+            elif keyword == "AIRMASS":
+                value = getattr(self.tserver, "Altitude")
+                secz = 1.0 / math.cos((90.0 - value) * math.pi / 180.0)
+                reply = f"{secz:.02}"
+
+            elif keyword == "HA":
+                lst = getattr(self.tserver, self.fits_keywords["LST-OBS"][0])
+                ra = getattr(self.tserver, self.fits_keywords["RA"][0])
+                ha = lst - ra
+                a = Angle(f"{ha}d")
+                reply = f"{int(a.hms.h):02}:{int(a.hms.m):02}:{a.hms.s:.02f}"
+
+            elif keyword == "LST-OBS":
+                value = getattr(self.tserver, self.fits_keywords[keyword][0])
+                a = Angle(f"{value}d")
+                reply = f"{int(a.hms.h):02}:{int(a.hms.m):02}:{a.hms.s:.02f}"
+
+            elif keyword == "EQUINOX":
+                reply = 2000.0  # test
+
+            elif keyword == "JULIAN":
                 try:
-                    fdict = self.vfilters.getfilters()
-                    break
+                    value = 0
                 except Exception:
-                    azcam.log(f"Filter read error {i}...")
-                    time.sleep(0.2)
-            reply = f"upper: {fdict['upper']} lower: {fdict['lower']}"
+                    value=""
+                reply = value
 
-        elif keyword == "EPOCH":
-            reply = 2000.0  # test
+            elif keyword == "ELEVAT":
+                value = getattr(self.tserver, self.fits_keywords[keyword][0])
+                reply = f"{value:.03}"
 
-        elif keyword == "RA":
-            value = getattr(self.tserver, self.fits_keywords[keyword][0])
-            a = Angle(f"{value}d")
-            reply = f"{int(a.hms.h):02}:{int(a.hms.m):02}:{a.hms.s:.02f}"
+            elif keyword == "MOTION":
+                value = getattr(self.tserver, self.fits_keywords[keyword][0])
+                reply = 1 if value else 0
 
-        elif keyword == "DEC":
-            value = getattr(self.tserver, self.fits_keywords[keyword][0])
-            a = Angle(f"{value}d")
-            d = int(a.dms.d)
-            m = abs(int(a.dms.m))
-            s = abs(int(a.dms.s))
-            reply = f"{d:02}:{m:02}:{s:.01f}"
+            elif keyword == "AZIMUTH":
+                value = getattr(self.tserver, self.fits_keywords[keyword][0])
+                reply = f"{value:.04}"
 
-        elif keyword == "AIRMASS":
-            value = getattr(self.tserver, "Altitude")
-            secz = 1.0 / math.cos((90.0 - value) * math.pi / 180.0)
-            reply = f"{secz:.02}"
+            elif keyword == "ROTANGLE":
+                value = getattr(self.rserver, self.fits_keywords[keyword][0])
+                reply = f"{value:.04}"
 
-        elif keyword == "HA":
-            lst = getattr(self.tserver, self.fits_keywords["LST-OBS"][0])
-            ra = getattr(self.tserver, self.fits_keywords["RA"][0])
-            ha = lst - ra
-            a = Angle(f"{ha}d")
-            reply = f"{int(a.hms.h):02}:{int(a.hms.m):02}:{a.hms.s:.02f}"
-
-        elif keyword == "LST-OBS":
-            value = getattr(self.tserver, self.fits_keywords[keyword][0])
-            a = Angle(f"{value}d")
-            reply = f"{int(a.hms.h):02}:{int(a.hms.m):02}:{a.hms.s:.02f}"
-
-        elif keyword == "EQUINOX":
-            reply = 2000.0  # test
-
-        # elif keyword == "JULIAN":
-        #    reply = ""
-
-        elif keyword == "ELEVAT":
-            value = getattr(self.tserver, self.fits_keywords[keyword][0])
-            reply = f"{value:.03}"
-
-        elif keyword == "MOTION":
-            value = getattr(self.tserver, self.fits_keywords[keyword][0])
-            reply = int(value)
-
-        elif keyword == "AZIMUTH":
-            value = getattr(self.tserver, self.fits_keywords[keyword][0])
-            reply = f"{value:.04}"
-
-        elif keyword == "ROTANGLE":
-            value = getattr(self.rserver, self.fits_keywords[keyword][0])
-            reply = f"{value:.04}"
-
-        elif keyword == "ST":
-            value = getattr(self.tserver, self.fits_keywords[keyword][0])
-            a = Angle(f"{value}d")
-            reply = f"{int(a.hms.h):02}:{int(a.hms.m):02}:{a.hms.s:.02f}"
-
-        else:
-            if keyword in self.fits_keywords:
-                self.header.set_keyword(
-                    keyword, "unsupported", self.fits_keywords[keyword][1], "str"
-                )
-                return ["unsupported", self.fits_keywords[keyword][1], "str"]
+            elif keyword == "ST":
+                value = getattr(self.tserver, self.fits_keywords[keyword][0])
+                a = Angle(f"{value}d")
+                reply = f"{int(a.hms.h):02}:{int(a.hms.m):02}:{a.hms.s:.02f}"
 
             else:
-                raise azcam.exceptions.AzcamError(
-                    f"Unknown telescope keyword: {keyword}"
-                )
+                if keyword in self.fits_keywords:
+                    self.header.set_keyword(
+                        keyword, "unsupported", self.fits_keywords[keyword][1], "str"
+                    )
+                    return ["unsupported", self.fits_keywords[keyword][1], "str"]
 
-        # store value in Header
-        self.header.set_keyword(keyword, reply)
+                else:
+                    raise azcam.exceptions.AzcamError(
+                        f"Unknown telescope keyword: {keyword}"
+                    )
 
-        reply, t = self.header.convert_type(reply, self.fits_keywords[keyword][2])
+            # store value in Header
+            self.header.set_keyword(keyword, reply)
 
+            reply, t = self.header.convert_type(reply, self.fits_keywords[keyword][2])
+        
+        except Exception as e:
+            azcam.log(f"header error for keyword {keyword}: {e}")
+            reply = ""
+            t="str"
+        
         return [reply, self.fits_keywords[keyword][1], t]
