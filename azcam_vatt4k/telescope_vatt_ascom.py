@@ -163,7 +163,7 @@ class VattAscom(Telescope):
 
             elif keyword == "JULIAN":
                 try:
-                    value = 0
+                    value = self.tserver.Action("julianday",[])
                 except Exception:
                     value=""
                 reply = value
