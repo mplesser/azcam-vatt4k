@@ -9,8 +9,8 @@ import math
 from alpaca.telescope import Telescope as AlpacaTelescope
 from alpaca.rotator import Rotator as AlpacaRotator
 
-import requests
-from astropy.coordinates import Angle
+from astropy.coordinates import Angle, SkyCoord
+from astropy import units as u
 
 import azcam
 import azcam.utils
@@ -109,11 +109,11 @@ class VattAscom(Telescope):
         if not self.is_enabled:
             azcam.exceptions.warning(f"{self.description} is not enabled")
             return
-        
+
         try:
 
             if keyword == "FILTER":
-                fdict={}
+                fdict = {}
                 for i in range(3):
                     try:
                         fdict = self.vfilters.getfilters()
@@ -121,8 +121,8 @@ class VattAscom(Telescope):
                     except Exception:
                         azcam.log(f"Filter read error {i}...")
                         time.sleep(0.2)
-                        fdict['upper']="unknown"
-                        fdict['lower']="unknown"
+                        fdict["upper"] = "unknown"
+                        fdict["lower"] = "unknown"
                 reply = f"upper: {fdict['upper']} lower: {fdict['lower']}"
 
             elif keyword == "EPOCH":
@@ -130,8 +130,12 @@ class VattAscom(Telescope):
 
             elif keyword == "RA":
                 value = getattr(self.tserver, self.fits_keywords[keyword][0])
-                a = Angle(f"{value}d")
-                reply = f"{int(a.hms.h):02}:{int(a.hms.m):02}:{a.hms.s:.02f}"
+                # a = Angle(f"{value}d")
+                coord = SkyCoord(value * u.deg, 0 * u.deg)
+                h = int(coord.hms[0])
+                m = int(coord.hms[1])
+                s = float(coord.hms[3])
+                reply = f"{h.hms.h:02}:{a.hms.m:02}:{a.hms.s:.02f}"
 
             elif keyword == "DEC":
                 value = getattr(self.tserver, self.fits_keywords[keyword][0])
@@ -163,9 +167,9 @@ class VattAscom(Telescope):
 
             elif keyword == "JULIAN":
                 try:
-                    value = self.tserver.Action("julianday",[])
+                    value = self.tserver.Action("julianday", [])
                 except Exception:
-                    value=""
+                    value = ""
                 reply = value
 
             elif keyword == "ELEVAT":
@@ -205,10 +209,10 @@ class VattAscom(Telescope):
             self.header.set_keyword(keyword, reply)
 
             reply, t = self.header.convert_type(reply, self.fits_keywords[keyword][2])
-        
+
         except Exception as e:
             azcam.log(f"header error for keyword {keyword}: {e}")
             reply = ""
-            t="str"
-        
+            t = "str"
+
         return [reply, self.fits_keywords[keyword][1], t]
