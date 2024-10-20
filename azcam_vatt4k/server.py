@@ -31,11 +31,6 @@ def setup():
         datafolder = sys.argv[i + 1]
     except ValueError:
         datafolder = None
-    try:
-        i = sys.argv.index("-lab")
-        lab = 1
-    except ValueError:
-        lab = 0
 
     # define folders for system
     azcam.db.systemname = "vatt4k"
@@ -74,10 +69,7 @@ def setup():
     )
     controller.video_gain = 2
     controller.video_speed = 2
-    if lab:
-        controller.camserver.set_server("conserver7", 2405)
-    else:
-        controller.camserver.set_server("vattccdc", 2405)
+    controller.camserver.set_server("vattccdc", 2405)
 
     # temperature controller
     tempcon = TempConArc()
@@ -93,16 +85,11 @@ def setup():
     exposure.filetype = exposure.filetypes[filetype]
     exposure.image.filetype = exposure.filetypes[filetype]
     exposure.display_image = 0
-    if lab:
-        exposure.send_image = 1
-        exposure.folder = "/data/vattspec"
-        exposure.sendimage.set_remote_imageserver()
-    else:
-        exposure.send_image = 1
-        exposure.folder = "/mnt/TBArray/images"
-        exposure.sendimage.set_remote_imageserver(
-            "10.0.1.108", 6543, "dataserver"
-        )  # vattcontrol.vatt
+    exposure.send_image = 1
+    exposure.folder = "/mnt/TBArray/images"
+    exposure.sendimage.set_remote_imageserver(
+        "10.0.1.108", 6543, "dataserver"
+    )  # vattcontrol.vatt
 
     # detector
     detector_vatt4k = {

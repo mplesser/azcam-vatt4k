@@ -1,7 +1,7 @@
 """
 Setup method for vatt4k console.
 Usage example:
-  python -i -m azcam_vatt4k.console
+  ipython -i -m azcam_vatt4k.console --profile azcamconsole
 """
 
 import os
@@ -11,6 +11,7 @@ import threading
 import azcam
 import azcam.utils
 import azcam_console.console
+from azcam_console.tools import create_console_tools
 import azcam_console.shortcuts
 from azcam.tools.ds9display import Ds9Display
 from azcam_console.tools.focus import FocusConsole
@@ -22,11 +23,6 @@ def setup():
         datafolder = sys.argv[i + 1]
     except ValueError:
         datafolder = None
-    try:
-        i = sys.argv.index("-lab")
-        lab = 1
-    except ValueError:
-        lab = 0
 
     # files and folders
     azcam.db.systemname = "vatt4k"
@@ -51,8 +47,6 @@ def setup():
     dthread.start()  # thread just for speed
 
     # console tools
-    from azcam_console.tools import create_console_tools
-
     create_console_tools()
 
     # focus script
@@ -79,3 +73,5 @@ def setup():
 # start
 setup()
 from azcam_console.cli import *
+
+del setup

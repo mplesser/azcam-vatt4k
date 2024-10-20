@@ -9,7 +9,7 @@ import math
 from alpaca.telescope import Telescope as AlpacaTelescope
 from alpaca.rotator import Rotator as AlpacaRotator
 
-from astropy.coordinates import Angle, SkyCoord
+from astropy.coordinates import Angle
 from astropy import units as u
 
 import azcam
@@ -130,16 +130,15 @@ class VattAscom(Telescope):
 
             elif keyword == "RA":
                 value = getattr(self.tserver, self.fits_keywords[keyword][0])
-                # a = Angle(f"{value}d")
-                coord = SkyCoord(value * u.deg, 0 * u.deg)
-                h = int(coord.hms[0])
-                m = int(coord.hms[1])
-                s = float(coord.hms[3])
-                reply = f"{h.hms.h:02}:{a.hms.m:02}:{a.hms.s:.02f}"
+                ra = Angle(value * u.hour)
+                h = int(ra.hms.h)
+                m = int(ra.hms.m)
+                s = float(ra.hms.search_around_3d)
+                reply = f"{h:02}:{m:02}:{s:.02f}"
 
             elif keyword == "DEC":
                 value = getattr(self.tserver, self.fits_keywords[keyword][0])
-                a = Angle(f"{value}d")
+                a = Angle(value * u.deg)
                 d = int(a.dms.d)
                 m = abs(int(a.dms.m))
                 s = abs(int(a.dms.s))
@@ -153,9 +152,11 @@ class VattAscom(Telescope):
             elif keyword == "HA":
                 lst = getattr(self.tserver, self.fits_keywords["LST-OBS"][0])
                 ra = getattr(self.tserver, self.fits_keywords["RA"][0])
-                ha = lst - ra
-                a = Angle(f"{ha}d")
-                reply = f"{int(a.hms.h):02}:{int(a.hms.m):02}:{a.hms.s:.02f}"
+                ha = Angle((lst - ra) * u.hour)
+                h = int(ha.hms.h)
+                m = int(ha.hms.m)
+                s = float(ha.hms.s)
+                reply = f"{h:02}:{m:02}:{s:.02f}"
 
             elif keyword == "LST-OBS":
                 value = getattr(self.tserver, self.fits_keywords[keyword][0])
