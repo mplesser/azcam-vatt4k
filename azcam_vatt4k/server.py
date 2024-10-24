@@ -18,7 +18,7 @@ from azcam.tools.arc.controller_arc import ControllerArc
 from azcam.tools.arc.exposure_arc import ExposureArc
 from azcam.tools.arc.tempcon_arc import TempConArc
 from azcam.tools.ds9display import Ds9Display
-from azcam.web.webserver_main import WebServer
+from azcam.web.fastapi_server import WebServer
 
 from azcam_vatt4k.telescope_vatt_ascom import VattAscom
 
