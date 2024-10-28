@@ -133,7 +133,7 @@ class VattAscom(Telescope):
                 ra = Angle(value * u.hour)
                 h = int(ra.hms.h)
                 m = int(ra.hms.m)
-                s = float(ra.hms.search_around_3d)
+                s = float(ra.hms.s)
                 reply = f"{h:02}:{m:02}:{s:.02f}"
 
             elif keyword == "DEC":
