@@ -155,6 +155,7 @@ class VattAscom(Telescope):
                 ra = getattr(self.tserver, self.fits_keywords["RA"][0])
                 # ra_a = Angle(value * u.hour)
                 ha = Angle((lst - ra) * u.hour)
+                print(ha, lst, ra)
                 h = int(ha.hms.h)
                 m = int(ha.hms.m)
                 s = float(ha.hms.s)
