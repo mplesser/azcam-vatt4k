@@ -151,7 +151,9 @@ class VattAscom(Telescope):
 
             elif keyword == "HA":
                 lst = getattr(self.tserver, self.fits_keywords["LST-OBS"][0])
+                # lst_a = Angle(f"{lst}d")
                 ra = getattr(self.tserver, self.fits_keywords["RA"][0])
+                # ra_a = Angle(value * u.hour)
                 ha = Angle((lst - ra) * u.hour)
                 h = int(ha.hms.h)
                 m = int(ha.hms.m)
