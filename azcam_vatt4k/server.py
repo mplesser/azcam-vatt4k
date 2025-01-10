@@ -9,7 +9,7 @@ import sys
 
 import azcam
 import azcam.utils
-import azcam.server
+from azcam.server import setup_server
 import azcam.shortcuts
 from azcam.cmdserver import CommandServer
 from azcam.header import System
@@ -31,6 +31,8 @@ def setup():
         datafolder = sys.argv[i + 1]
     except ValueError:
         datafolder = None
+
+    setup_server()
 
     # define folders for system
     azcam.db.systemname = "vatt4k"
@@ -140,14 +142,13 @@ def setup():
     cmdserver = CommandServer()
     cmdserver.port = 2402
     azcam.log(f"Starting cmdserver - listening on port {cmdserver.port}")
-    azcam.db.tools["api"].initialize_api()
+    azcam.db.api.initialize()
     cmdserver.start()
 
     # web server
     webserver = WebServer()
     webserver.port = 2403
-    webserver.logcommands = 1
-    webserver.logstatus = 0
+    webserver.logcommands = 0
     webserver.start()
 
     # azcammonitor
